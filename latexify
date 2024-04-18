@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# This file is designed to be called from notewatch.
+
+# $1 is the path to the PDF file
+# Note that xargs also gives a second argument, but we ignore it as fswatch triggers 
+# two events per pdf file change.
+
+pdf_file="$1"
+# strip out just the basename of the pdf file
+filename=$(basename "$pdf_file" .pdf)
+# export the latexified pdf file + tex file to exports folder
+export_file="${filename}.pdf"
+
+echo "${filename}.pdf has been updated. Running Inkscape..."
+
+# Run Inkscape to convert PDF to LaTeX
+inkscape --actions="open-page: 1; file-open: $pdf_file; export-filename: $export_file; select-all; page-fit-to-selection; export-latex; export-do" 
+
+echo
+

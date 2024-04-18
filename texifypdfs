@@ -1,0 +1,57 @@
+#!/bin/bash
+
+# Check if a folder path is provided as an argument
+if [ "$#" -ne 1 ]; then
+    echo "Usage: texify pdfs_path"
+    echo "For instance, to texify a folder stored in Box cloud storage on a Mac:"
+    echo "texify /Users/brucebartlett/Library/CloudStorage/Box-Box/Notability/Coding/latex/drawings"
+    echo "The texified pdf + latex file created by Inkscape are inserted into the current directory."
+    exit 1
+fi
+
+# Function to get the last modified timestamp of a file
+get_last_modified_timestamp() {
+    stat -f "%m" "$1"
+    echo "The value of the variable 1 is $1"
+}
+
+# Get the folder path from the command-line argument
+folder="$1"
+
+# Check if .notelog file exists
+if [ -f "$folder/.notelog" ]; then
+    # Get the last modified timestamp from .notelog
+    previousUpdate=$(date -r "$folder/.notelog" "+%s")
+else
+    # Set previousUpdate to 1 January 1980 12pm (Unix timestamp)
+    previousUpdate=315532800 # Unix timestamp for 1 January 1980 12pm
+fi
+
+upToDate=1
+
+# Loop through all PDF files in the folder
+for pdf_file in "$folder"/*.pdf; do
+    # Check if the file is newer than previousUpdate
+    lastModifiedString=$(stat -f "%m" "$pdf_file")
+    lastModified=$(printf "%.0f" "$lastModifiedString")
+
+    if [ $lastModified -gt $previousUpdate ]; then
+        upToDate=0
+        # Strip out the filename        
+        filename=$(basename "$pdf_file" .pdf) 
+        export_file=${filename}.pdf
+
+        echo "Processing $export_file ..."
+
+        # Run Inkscape on the file to generate stripped-out-pdf and latex-include-file
+        inkscape --actions="open-page: 1; file-open: $pdf_file; export-filename: $export_file; select-all; page-fit-to-selection; export-latex; export-do"  
+    fi
+done
+
+if [ $upToDate -eq 1 ]; then
+    echo "All files up to date :-)"
+if
+
+# Update .notelog with the current timestamp
+touch "$folder/.notelog"
+

@@ -1,0 +1,8 @@
+#!/bin/bash
+
+# Print message to user
+echo "Monitoring Notability folder on Box folder for updated pdf files to latexify..."
+
+# Start fswatch to monitor the folder recursively. 
+fswatch -0 --recursive --exclude ".*" --include "\\.pdf$" /Users/brucebartlett/Library/CloudStorage/Box-Box/Notability | xargs -0 -n 2 latexify 
+
