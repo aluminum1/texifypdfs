@@ -4,8 +4,8 @@ Bash script to process pdfs which include math text, via Inkscape, for inclusion
 ## Use case for texifypdfs
 Suppose you are making an image (or images) for a math article, on your iPad, using eg Notability. You want to include this image
 into your LaTeX paper, `article.tex`, in such a way that text in the image will be texified by LaTeX, using the Inkscape text -> LaTeX feature. 
-In other words, a text box $\int_a^b x^2 dx$ in your Notability drawing will be included in your article as a picture where LaTeX has processed
-the math. 
+In other words, a text box `$\int_a^b x^2 dx$` in your Notability drawing will be included in your article as a picture where LaTeX has processed
+the math into $\int_a^b x^2 dx$ (i.e. `\int` becomes an integral sign etc.).
 
 You want to do this all automatically, in such a way that every time you edit the image in Notability, changes will be pushed into your `article.tex` file.
 
@@ -14,7 +14,7 @@ You want to do this all automatically, in such a way that every time you edit th
 So, what you do is you switch on cloud storage, say Box (or Dropbox, or...), in Notability, so that your Inkscape drawing (a .note file) gets exported automatically as a pdf into
 a folder on Box in the cloud, say `Notability/images/image1.pdf`.
 
-Then you install the desktop application for Box on your pc, so that image1.pdf now gets automatically downloaded onto your desktop. On a Mac, using Box, this would be located 
+Then you install the desktop application for Box on your pc, so that `image1.pdf` now gets automatically downloaded onto your desktop. On a Mac, using Box, this would be located 
 in the folder `/Users/username/Library/CloudStorage/Box/Notability/images`. (Replace username with your user name).
 
 Ok. Now, in the folder where your `article.tex` file is located, you run the following command from a terminal:
